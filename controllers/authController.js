@@ -58,7 +58,7 @@ const loginController = asyncHandler(async (req, res, next) => {
 
   if (isPasswordMatched) {
     const token = jwt.sign(
-      { user: user._id, email: user.email },
+      { id: user._id, email: user.email },
       process.env.SECRET,
       { expiresIn: "1d" }
     );
