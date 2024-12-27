@@ -40,4 +40,20 @@ const getVideos = asyncHandler(async (req, res, next) => {
   });
 });
 
-module.exports = { uploadVideo, getVideos };
+const getVideoDetails = asyncHandler(async (req, res, next) => {
+  const { id } = req.params;
+
+  const video = await VideoModel.findById(id);
+
+  if (!video) {
+    res.status(404);
+    throw new Error("Video not found");
+  }
+
+  res.status(200).json({
+    success: true,
+    data: video,
+  });
+});
+
+module.exports = { uploadVideo, getVideos, getVideoDetails };
