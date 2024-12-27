@@ -2,7 +2,7 @@ const asyncHandler = require("express-async-handler");
 const VideoModel = require("../models/VideoModel");
 
 const uploadVideo = asyncHandler(async (req, res, next) => {
-  const { title, description, videoUrl } = req.body;
+  const { title, description, videoUrl, location, incidentType } = req.body;
 
   if (!title || !videoUrl) {
     res.status(400);
@@ -15,6 +15,8 @@ const uploadVideo = asyncHandler(async (req, res, next) => {
     title,
     description,
     videoUrl,
+    location,
+    incidentType,
     uploadedBy: userId || undefined,
     uploadedByGuest: !userId,
   };

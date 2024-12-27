@@ -8,10 +8,13 @@ const videoRoutes = require("./routes/videoRoutes");
 const connectDb = require("./utils/connectDb");
 const errorMiddleware = require("./middlewares/errorMiddleware");
 const bodyParser = require("body-parser");
+const cors = require("cors");
 
 connectDb();
 
 const PORT = process.env.PORT || 1003;
+
+app.use(cors({ origin: [process.env.FRONTEND_URI] }));
 
 app.use(bodyParser.json());
 app.use(
