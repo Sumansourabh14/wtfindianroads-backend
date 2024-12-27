@@ -30,4 +30,14 @@ const uploadVideo = asyncHandler(async (req, res, next) => {
   });
 });
 
-module.exports = { uploadVideo };
+const getVideos = asyncHandler(async (req, res, next) => {
+  const videos = await VideoModel.find();
+
+  res.status(200).json({
+    success: true,
+    data: videos,
+    total: videos.length,
+  });
+});
+
+module.exports = { uploadVideo, getVideos };
