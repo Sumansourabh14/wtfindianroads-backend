@@ -15,7 +15,7 @@ const signUpController = asyncHandler(async (req, res, next) => {
 
   if (!!userExists) {
     res.status(401);
-    throw new Error("User already exists");
+    throw new Error("User already exists with this email address.");
   }
 
   const salt = await bcrypt.genSalt(10);
