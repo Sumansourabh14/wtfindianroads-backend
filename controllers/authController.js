@@ -4,9 +4,9 @@ const bcrypt = require("bcrypt");
 const UserModel = require("../models/UserModel");
 
 const signUpController = asyncHandler(async (req, res, next) => {
-  const { name, email, password } = req.body;
+  const { username, email, password } = req.body;
 
-  if (!name || !email || !password) {
+  if (!username || !email || !password) {
     res.status(400);
     throw new Error("All fields are required");
   }
@@ -22,7 +22,7 @@ const signUpController = asyncHandler(async (req, res, next) => {
   const hashedPassword = await bcrypt.hash(password, salt);
 
   const user = await UserModel.create({
-    name,
+    username,
     email,
     password: hashedPassword,
   });
@@ -74,4 +74,30 @@ const loginController = asyncHandler(async (req, res, next) => {
   }
 });
 
-module.exports = { signUpController, loginController };
+const isUsernameAvailableController = asyncHandler(async (req, res, next) => {
+  const { username } = req.body;
+
+  if (!username) {
+    res.status(400);
+    throw new Error("Username is not filled!");
+  }
+
+  // Check if username already exists
+  const userIsPresent = await UserModel.findOne({ username: username });
+
+  if (!!userIsPresent) {
+    res.status(400);
+    throw new Error("Oops! Username is not available!");
+  }
+
+  res.status(201).json({
+    success: true,
+    message: "Username is available!",
+  });
+});
+
+module.exports = {
+  signUpController,
+  loginController,
+  isUsernameAvailableController,
+};
