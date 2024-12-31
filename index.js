@@ -23,6 +23,10 @@ app.use(
   })
 );
 
+app.get("/", (req, res, next) => {
+  res.json({ success: true });
+});
+
 app.use("/api/v1", authRoutes);
 app.use("/api/v1/video", videoRoutes);
 app.use(errorMiddleware);
