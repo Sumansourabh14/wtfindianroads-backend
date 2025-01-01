@@ -51,7 +51,7 @@ const loginController = asyncHandler(async (req, res, next) => {
 
   if (!user) {
     res.status(401);
-    throw new Error("User does not exists");
+    throw new Error("User does not exists with the provided email");
   }
 
   const isPasswordMatched = await bcrypt.compare(password, user.password);
@@ -70,7 +70,7 @@ const loginController = asyncHandler(async (req, res, next) => {
     });
   } else {
     res.status(400);
-    throw new Error("Invalid");
+    throw new Error("Either the password or email is incorrect");
   }
 });
 
