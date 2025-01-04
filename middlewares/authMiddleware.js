@@ -11,14 +11,19 @@ const authMiddleware = catchAsync(async (req, res, next) => {
   ) {
     token = req.headers.authorization.split(" ")[1];
 
-    const decodedData = jwt.verify(token, process.env.SECRET);
+    try {
+      const decodedData = jwt.verify(token, process.env.SECRET);
 
-    req.user = await UserModel.findById(decodedData.id).select("-password");
+      req.user = await UserModel.findById(decodedData.id).select("-password");
 
-    next();
+      next();
+    } catch (error) {
+      res.status(401);
+      throw new Error("Invalid or expired token");
+    }
   } else {
     res.status(401);
-    throw new Error("Invalid token");
+    throw new Error("Token must be provided");
   }
 });
 

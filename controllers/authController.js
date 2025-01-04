@@ -49,11 +49,6 @@ const loginController = asyncHandler(async (req, res, next) => {
 
   const user = await UserModel.findOne({ email });
 
-  if (!user) {
-    res.status(401);
-    throw new Error("User does not exists with the provided email");
-  }
-
   const isPasswordMatched = await bcrypt.compare(password, user.password);
 
   if (isPasswordMatched) {
@@ -70,7 +65,7 @@ const loginController = asyncHandler(async (req, res, next) => {
       token,
     });
   } else {
-    res.status(400);
+    res.status(401);
     throw new Error("Either the password or email is incorrect");
   }
 });
