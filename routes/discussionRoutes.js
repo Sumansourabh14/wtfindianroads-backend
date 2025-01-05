@@ -4,7 +4,7 @@ const {
   createDiscussionThread,
   viewAllDiscussionThreads,
   getDiscussionById,
-} = require("../controllers/DiscussionController");
+} = require("../controllers/discussionController");
 const router = express.Router();
 
 router.post("/create", authMiddleware, createDiscussionThread);
