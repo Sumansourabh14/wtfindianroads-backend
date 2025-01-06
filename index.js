@@ -11,8 +11,14 @@ const connectDb = require("./utils/connectDb");
 const errorMiddleware = require("./middlewares/errorMiddleware");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+const cron = require("node-cron");
+const { pingServer } = require("./utils/pingServer");
 
 connectDb();
+
+cron.schedule("*/15 * * * *", () => {
+  pingServer();
+});
 
 const PORT = process.env.PORT || 1003;
 
