@@ -1,5 +1,19 @@
+const http = require("http");
+const { Server } = require("socket.io");
 const express = require("express");
+
 const app = express();
+const server = http.createServer(app);
+const io = new Server(server, { cors: { origin: "*" } });
+
+io.on("connection", (socket) => {
+  console.log("socket.io connection established", socket.id);
+
+  socket.on("send-location", (data) => {
+    io.emit("location", { id: socket.id, ...data });
+  });
+});
+
 const dotenv = require("dotenv");
 dotenv.config();
 
@@ -41,6 +55,6 @@ app.use("/api/v1/video", videoRoutes);
 app.use("/api/v1/discussion", discussionRoutes);
 app.use(errorMiddleware);
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log("listening on port " + PORT);
 });
