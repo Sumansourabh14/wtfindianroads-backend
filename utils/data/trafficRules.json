@@ -1,0 +1,174 @@
+{
+  "trafficRulesAndTips": [
+    {
+      "category": "General Rules",
+      "rules": [
+        {
+          "title": "Wear a Helmet",
+          "description": "Always wear a helmet while riding a two-wheeler. Ensure the helmet meets safety standards and is properly fastened."
+        },
+        {
+          "title": "Wear Seat Belts",
+          "description": "All passengers in a car must wear seat belts to ensure safety during sudden stops or collisions."
+        },
+        {
+          "title": "Do Not Use Mobile Phones",
+          "description": "Avoid using mobile phones while driving. If necessary, use hands-free devices."
+        },
+        {
+          "title": "Follow Speed Limits",
+          "description": "Adhere to the speed limits displayed on road signs. Over-speeding can lead to accidents and penalties."
+        },
+        {
+          "title": "Avoid Drunk Driving",
+          "description": "Driving under the influence of alcohol or drugs is strictly prohibited and dangerous."
+        },
+        {
+          "title": "Obey Traffic Lights",
+          "description": "Stop at red lights, slow down at yellow lights, and proceed only when the light is green."
+        },
+        {
+          "title": "Do Not Honk Unnecessarily",
+          "description": "Avoid unnecessary honking, especially in silence zones near schools, hospitals, and residential areas."
+        },
+        {
+          "title": "Carry Valid Documents",
+          "description": "Always carry your driving license, vehicle registration certificate, insurance papers, and pollution control certificate."
+        }
+      ]
+    },
+    {
+      "category": "Road Signs",
+      "rules": [
+        {
+          "title": "Mandatory Signs",
+          "description": "These include signs like 'Stop', 'Give Way', and 'No Entry'. Follow these instructions without fail."
+        },
+        {
+          "title": "Cautionary Signs",
+          "description": "These warn about potential hazards ahead, such as 'Sharp Turn' or 'School Zone'. Drive carefully."
+        },
+        {
+          "title": "Informative Signs",
+          "description": "Provide information about distances, directions, or facilities like petrol pumps and hospitals."
+        },
+        {
+          "title": "Speed Limit Signs",
+          "description": "Always follow the speed limits indicated on road signs to ensure safety and avoid fines."
+        },
+        {
+          "title": "Lane Usage Signs",
+          "description": "Signs like 'Left Turn Only' or 'Straight Ahead Only' guide lane usage. Adhere to them for smooth traffic flow."
+        }
+      ]
+    },
+    {
+      "category": "Pedestrian Safety",
+      "rules": [
+        {
+          "title": "Use Zebra Crossings",
+          "description": "Always cross the road at designated zebra crossings or pedestrian signals."
+        },
+        {
+          "title": "Walk on Footpaths",
+          "description": "Use footpaths or sidewalks to stay safe from vehicular traffic."
+        },
+        {
+          "title": "Be Alert at Intersections",
+          "description": "Look both ways before crossing roads at intersections."
+        },
+        {
+          "title": "Avoid Distracted Walking",
+          "description": "Do not use mobile phones or headphones while crossing roads to stay alert."
+        },
+        {
+          "title": "Follow Pedestrian Signals",
+          "description": "Cross only when the pedestrian signal turns green and wait if it’s red."
+        }
+      ]
+    },
+    {
+      "category": "Driving Tips",
+      "rules": [
+        {
+          "title": "Maintain a Safe Distance",
+          "description": "Keep a safe distance from the vehicle in front to avoid collisions."
+        },
+        {
+          "title": "Use Indicators",
+          "description": "Always use indicators when turning or changing lanes to inform other road users."
+        },
+        {
+          "title": "Check Blind Spots",
+          "description": "Always check blind spots before changing lanes or turning."
+        },
+        {
+          "title": "Avoid Aggressive Driving",
+          "description": "Do not indulge in rash driving, overtaking in unsafe conditions, or road rage."
+        },
+        {
+          "title": "Turn on Headlights at Dusk",
+          "description": "Switch on your headlights as soon as visibility reduces, even before it’s completely dark."
+        },
+        {
+          "title": "Use Rearview Mirrors",
+          "description": "Regularly check your rearview mirrors to stay aware of surrounding vehicles."
+        },
+        {
+          "title": "Avoid Tailgating",
+          "description": "Do not drive too close to the vehicle in front. Maintain a safe braking distance."
+        }
+      ]
+    },
+    {
+      "category": "Two-Wheeler Safety",
+      "rules": [
+        {
+          "title": "Wear Reflective Clothing",
+          "description": "Use reflective clothing or stickers to increase visibility, especially at night."
+        },
+        {
+          "title": "Avoid Overloading",
+          "description": "Do not carry more than one passenger or overload your vehicle."
+        },
+        {
+          "title": "Stay in the Left Lane",
+          "description": "Ride in the leftmost lane and avoid overtaking unnecessarily."
+        },
+        {
+          "title": "Regularly Maintain Your Bike",
+          "description": "Ensure your two-wheeler is in good condition by servicing it regularly."
+        },
+        {
+          "title": "Use Both Brakes",
+          "description": "Apply both front and rear brakes together for effective braking and control."
+        }
+      ]
+    },
+    {
+      "category": "Emergency Preparedness",
+      "rules": [
+        {
+          "title": "Keep Emergency Contacts",
+          "description": "Have a list of emergency contacts handy in case of an accident or breakdown."
+        },
+        {
+          "title": "First Aid Kit",
+          "description": "Carry a first aid kit in your vehicle for emergencies."
+        },
+        {
+          "title": "Use Hazard Lights",
+          "description": "Use hazard lights to warn other drivers if your vehicle breaks down."
+        },
+        {
+          "title": "Know Emergency Numbers",
+          "description": "Familiarize yourself with emergency helpline numbers like 112 (national emergency) and 108 (ambulance)."
+        },
+        {
+          "title": "Learn Basic Vehicle Repairs",
+          "description": "Understand how to change a flat tire or jump-start your vehicle for minor emergencies."
+        }
+      ]
+    }
+  ]
+}
