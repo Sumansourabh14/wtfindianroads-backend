@@ -1,5 +1,6 @@
 const asyncHandler = require("express-async-handler");
 const DiscussionModel = require("../models/DiscussionModel");
+const CommentModel = require("../models/CommentModel");
 
 const createDiscussionThread = asyncHandler(async (req, res, next) => {
   const { title, description, authorId } = req.body;
@@ -9,13 +10,13 @@ const createDiscussionThread = asyncHandler(async (req, res, next) => {
     throw new Error("title and authorId field is required");
   }
 
-  const paylod = {
+  const payload = {
     title,
     description,
     author: authorId,
   };
 
-  const newDiscussionThread = await DiscussionModel.create(paylod);
+  const newDiscussionThread = await DiscussionModel.create(payload);
 
   if (!!newDiscussionThread) {
     res.json({
@@ -25,6 +26,52 @@ const createDiscussionThread = asyncHandler(async (req, res, next) => {
   } else {
     throw new Error("Failed to create a discussion thread");
   }
+});
+
+const createComment = asyncHandler(async (req, res, next) => {
+  const { description, authorId, discussionId } = req.body;
+
+  if (!description || !authorId || !discussionId) {
+    res.status(400);
+    throw new Error("All fields are required");
+  }
+
+  const discussion = await DiscussionModel.findById(discussionId);
+
+  if (!discussion) {
+    res.status(404);
+    throw new Error("Discussion with the given id not found");
+  }
+
+  const payload = {
+    description,
+    author: authorId,
+    discussion: discussionId,
+  };
+
+  const newComment = await CommentModel.create(payload);
+
+  if (!!newComment) {
+    res.json({
+      success: true,
+      data: newComment,
+    });
+  } else {
+    throw new Error("Failed to create a comment");
+  }
+});
+
+const viewAllComments = asyncHandler(async (req, res, next) => {
+  const comments = await CommentModel.find()
+    .populate("author", "username") // Populate only the username field from User
+    .sort({ createdAt: -1 })
+    .lean();
+
+  res.json({
+    success: true,
+    data: comments,
+    total: comments.length,
+  });
 });
 
 const viewAllDiscussionThreads = asyncHandler(async (req, res, next) => {
@@ -63,4 +110,6 @@ module.exports = {
   createDiscussionThread,
   viewAllDiscussionThreads,
   getDiscussionById,
+  createComment,
+  viewAllComments,
 };

@@ -22,6 +22,7 @@ const dataRoutes = require("./routes/dataRoutes");
 const userRoutes = require("./routes/userRoutes");
 const videoRoutes = require("./routes/videoRoutes");
 const discussionRoutes = require("./routes/discussionRoutes");
+const commentRoutes = require("./routes/commentRoutes");
 const connectDb = require("./utils/connectDb");
 const errorMiddleware = require("./middlewares/errorMiddleware");
 const bodyParser = require("body-parser");
@@ -54,6 +55,7 @@ app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/users", userRoutes);
 app.use("/api/v1/video", videoRoutes);
 app.use("/api/v1/discussion", discussionRoutes);
+app.use("/api/v1/comment", commentRoutes);
 app.use("/api/v1/data", dataRoutes);
 app.use(errorMiddleware);
 
