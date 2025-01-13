@@ -61,8 +61,17 @@ const createComment = asyncHandler(async (req, res, next) => {
   }
 });
 
-const viewAllComments = asyncHandler(async (req, res, next) => {
-  const comments = await CommentModel.find()
+const viewAllCommentsOfDiscussion = asyncHandler(async (req, res, next) => {
+  const { discussionId } = req.params;
+
+  const discussion = await DiscussionModel.findById(discussionId);
+
+  if (!discussion) {
+    res.status(404);
+    throw new Error("Discussion with the given id not found");
+  }
+
+  const comments = await CommentModel.find({ discussion: discussionId })
     .populate("author", "username") // Populate only the username field from User
     .sort({ createdAt: -1 })
     .lean();
@@ -111,5 +120,5 @@ module.exports = {
   viewAllDiscussionThreads,
   getDiscussionById,
   createComment,
-  viewAllComments,
+  viewAllCommentsOfDiscussion,
 };
