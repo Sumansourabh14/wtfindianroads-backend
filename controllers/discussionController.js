@@ -28,6 +28,38 @@ const createDiscussionThread = asyncHandler(async (req, res, next) => {
   }
 });
 
+const deleteDiscussionThread = asyncHandler(async (req, res, next) => {
+  const { id } = req.params;
+
+  if (!id) {
+    res.status(400);
+    throw new Error("discussionId field is required");
+  }
+
+  const discussion = await DiscussionModel.findById(id);
+
+  if (!discussion) {
+    res.status(404);
+    throw new Error("Discussion not found");
+  }
+
+  await DiscussionModel.findByIdAndDelete(discussion._id);
+
+  // remove comments associated with the discussion
+  const isDeleted = await CommentModel.deleteMany({
+    discussion: discussion._id,
+  });
+
+  if (isDeleted) {
+    res.json({
+      success: true,
+      message: `Discussion with id: ${discussion._id} and all its comments have been removed`,
+    });
+  } else {
+    throw new Error("Failed to create the discussion thread");
+  }
+});
+
 const createComment = asyncHandler(async (req, res, next) => {
   const { description, authorId, discussionId } = req.body;
 
@@ -65,6 +97,50 @@ const createComment = asyncHandler(async (req, res, next) => {
     });
   } else {
     throw new Error("Failed to create a comment");
+  }
+});
+
+const deleteComment = asyncHandler(async (req, res, next) => {
+  const { commentId, discussionId } = req.params;
+
+  if (!commentId || !discussionId) {
+    res.status(400);
+    throw new Error("All fields are required");
+  }
+
+  const discussion = await DiscussionModel.findById(discussionId);
+
+  if (!discussion) {
+    res.status(404);
+    throw new Error("Discussion with the given id not found");
+  }
+
+  // Check if the comment exists
+  const comment = await CommentModel.findById(commentId);
+
+  if (!comment) {
+    res.status(404);
+    throw new Error("Comment with the given ID not found.");
+  }
+
+  await CommentModel.findByIdAndDelete(commentId);
+
+  // update the discussion to include the comment
+  const updatedDiscussion = await DiscussionModel.findByIdAndUpdate(
+    discussionId,
+    { $pull: { comments: commentId } },
+    { new: true }
+  );
+
+  if (updatedDiscussion) {
+    res.status(200).json({
+      success: true,
+      message: `Comment with id: ${commentId} has been removed`,
+    });
+  } else {
+    throw new Error(
+      "Failed to update the discussion after removing the comment"
+    );
   }
 });
 
@@ -123,9 +199,11 @@ const getDiscussionById = asyncHandler(async (req, res, next) => {
 });
 
 module.exports = {
-  createDiscussionThread,
-  viewAllDiscussionThreads,
   getDiscussionById,
+  createDiscussionThread,
+  deleteDiscussionThread,
+  viewAllDiscussionThreads,
   createComment,
   viewAllCommentsOfDiscussion,
+  deleteComment,
 };
