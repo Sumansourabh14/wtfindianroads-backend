@@ -51,8 +51,15 @@ const createComment = asyncHandler(async (req, res, next) => {
 
   const newComment = await CommentModel.create(payload);
 
-  if (!!newComment) {
-    res.json({
+  // update the discussion to include the comment
+  const updatedDiscussion = await DiscussionModel.findByIdAndUpdate(
+    discussionId,
+    { $push: { comments: newComment._id } },
+    { new: true } // Return the updated document
+  );
+
+  if (newComment && updatedDiscussion) {
+    res.status(201).json({
       success: true,
       data: newComment,
     });
