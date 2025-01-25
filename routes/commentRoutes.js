@@ -5,6 +5,7 @@ const {
   deleteComment,
   createCommentReply,
   viewAllCommentsOfParentComment,
+  deleteCommentReply,
 } = require("../controllers/discussionController");
 const { authMiddleware } = require("../middlewares/authMiddleware");
 const router = express.Router();
@@ -17,6 +18,11 @@ router.delete(
   "/delete/:commentId/:discussionId",
   authMiddleware,
   deleteComment
+);
+router.delete(
+  "/delete/reply/:parentCommentId/:commentId",
+  authMiddleware,
+  deleteCommentReply
 );
 
 module.exports = router;

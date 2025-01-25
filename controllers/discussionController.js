@@ -192,6 +192,43 @@ const deleteComment = asyncHandler(async (req, res, next) => {
   }
 });
 
+const deleteCommentReply = asyncHandler(async (req, res, next) => {
+  const { commentId, parentCommentId } = req.params;
+
+  if (!commentId || !parentCommentId) {
+    res.status(400);
+    throw new Error("All fields are required");
+  }
+
+  // Check if the comment exists
+  const comment = await CommentModel.findById(commentId);
+
+  if (!comment) {
+    res.status(404);
+    throw new Error("Comment with the given ID not found.");
+  }
+
+  await CommentModel.findByIdAndDelete(commentId);
+
+  // update the parent comment to exclude the comment reply
+  const updatedParentComment = await CommentModel.findByIdAndUpdate(
+    parentCommentId,
+    { $pull: { replies: commentId } },
+    { new: true }
+  );
+
+  if (updatedParentComment) {
+    res.status(200).json({
+      success: true,
+      message: `Comment with id: ${commentId} has been removed`,
+    });
+  } else {
+    throw new Error(
+      "Failed to update the comment after removing the comment reply"
+    );
+  }
+});
+
 const viewAllCommentsOfDiscussion = asyncHandler(async (req, res, next) => {
   const { discussionId } = req.params;
 
@@ -201,6 +238,10 @@ const viewAllCommentsOfDiscussion = asyncHandler(async (req, res, next) => {
     res.status(404);
     throw new Error("Discussion with the given id not found");
   }
+
+  const totalComments = await CommentModel.countDocuments({
+    discussion: discussionId,
+  });
 
   const comments = await CommentModel.find({
     discussion: discussionId,
@@ -213,7 +254,8 @@ const viewAllCommentsOfDiscussion = asyncHandler(async (req, res, next) => {
   res.json({
     success: true,
     data: comments,
-    total: comments.length,
+    totalTopLevelComments: comments.length,
+    totalComments,
   });
 });
 
@@ -281,4 +323,5 @@ module.exports = {
   viewAllCommentsOfDiscussion,
   viewAllCommentsOfParentComment,
   deleteComment,
+  deleteCommentReply,
 };
