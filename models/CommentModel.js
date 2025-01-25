@@ -22,6 +22,12 @@ const commentSchema = new mongoose.Schema(
       ref: "discussion",
       required: true,
     },
+    replies: [
+      {
+        type: mongoose.Schema.Types.ObjectId, // References to comments (optional)
+        ref: "comment",
+      },
+    ],
     likes: {
       type: Number,
       default: 0, // Optional: Track likes for the discussion

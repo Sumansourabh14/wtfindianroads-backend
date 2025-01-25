@@ -131,7 +131,13 @@ const createCommentReply = asyncHandler(async (req, res, next) => {
     { new: true } // Return the updated document
   );
 
-  if (newComment && updatedDiscussion) {
+  const updatedComment = await CommentModel.findByIdAndUpdate(
+    parentComment,
+    { $push: { replies: newComment._id } },
+    { new: true } // Return the updated document
+  );
+
+  if (newComment && updatedDiscussion && updatedComment) {
     res.status(201).json({
       success: true,
       data: newComment,
@@ -167,7 +173,7 @@ const deleteComment = asyncHandler(async (req, res, next) => {
 
   await CommentModel.findByIdAndDelete(commentId);
 
-  // update the discussion to include the comment
+  // update the discussion to exclude the comment
   const updatedDiscussion = await DiscussionModel.findByIdAndUpdate(
     discussionId,
     { $pull: { comments: commentId } },
@@ -196,7 +202,32 @@ const viewAllCommentsOfDiscussion = asyncHandler(async (req, res, next) => {
     throw new Error("Discussion with the given id not found");
   }
 
-  const comments = await CommentModel.find({ discussion: discussionId })
+  const comments = await CommentModel.find({
+    discussion: discussionId,
+    parentCommentId: { $eq: null },
+  })
+    .populate("author", "username") // Populate only the username field from User
+    .sort({ createdAt: -1 })
+    .lean();
+
+  res.json({
+    success: true,
+    data: comments,
+    total: comments.length,
+  });
+});
+
+const viewAllCommentsOfParentComment = asyncHandler(async (req, res, next) => {
+  const { commentId } = req.params;
+
+  const comment = await CommentModel.findById(commentId);
+
+  if (!comment) {
+    res.status(404);
+    throw new Error("Comment with the given id not found");
+  }
+
+  const comments = await CommentModel.find({ parentCommentId: commentId })
     .populate("author", "username") // Populate only the username field from User
     .sort({ createdAt: -1 })
     .lean();
@@ -248,5 +279,6 @@ module.exports = {
   createComment,
   createCommentReply,
   viewAllCommentsOfDiscussion,
+  viewAllCommentsOfParentComment,
   deleteComment,
 };
