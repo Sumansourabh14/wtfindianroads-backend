@@ -100,6 +100,48 @@ const createComment = asyncHandler(async (req, res, next) => {
   }
 });
 
+const createCommentReply = asyncHandler(async (req, res, next) => {
+  const { parentCommentId, description, authorId, discussionId } = req.body;
+
+  if (!description || !authorId || !discussionId || !parentCommentId) {
+    res.status(400);
+    throw new Error("All fields are required");
+  }
+
+  const parentComment = await CommentModel.findById(parentCommentId);
+
+  if (!parentComment) {
+    res.status(404);
+    throw new Error("Parent comment with the given id not found");
+  }
+
+  const payload = {
+    parentCommentId,
+    description,
+    author: authorId,
+    discussion: discussionId,
+  };
+
+  const newComment = await CommentModel.create(payload);
+
+  // update the discussion to include the comment
+  const updatedDiscussion = await DiscussionModel.findByIdAndUpdate(
+    discussionId,
+    { $push: { comments: newComment._id } },
+    { new: true } // Return the updated document
+  );
+
+  if (newComment && updatedDiscussion) {
+    res.status(201).json({
+      success: true,
+      data: newComment,
+      message: "Comment reply has been added",
+    });
+  } else {
+    throw new Error("Failed to create a comment reply");
+  }
+});
+
 const deleteComment = asyncHandler(async (req, res, next) => {
   const { commentId, discussionId } = req.params;
 
@@ -204,6 +246,7 @@ module.exports = {
   deleteDiscussionThread,
   viewAllDiscussionThreads,
   createComment,
+  createCommentReply,
   viewAllCommentsOfDiscussion,
   deleteComment,
 };

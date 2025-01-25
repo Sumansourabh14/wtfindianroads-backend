@@ -2,6 +2,11 @@ const mongoose = require("mongoose");
 
 const commentSchema = new mongoose.Schema(
   {
+    parentCommentId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "comment",
+      default: null,
+    },
     description: {
       type: String,
       trim: true,
