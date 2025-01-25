@@ -28,6 +28,38 @@ const createDiscussionThread = asyncHandler(async (req, res, next) => {
   }
 });
 
+const updateDiscussionThread = asyncHandler(async (req, res, next) => {
+  const { id } = req.params; // Get the discussion ID from the request parameters
+  const { title, description } = req.body; // Get the fields to update from the request body
+
+  if (!id) {
+    res.status(400);
+    throw new Error("Discussion ID is required");
+  }
+
+  // Build the update payload dynamically
+  const updatePayload = {};
+  if (title) updatePayload.title = title;
+  if (description) updatePayload.description = description;
+
+  // Find and update the discussion
+  const updatedDiscussionThread = await DiscussionModel.findByIdAndUpdate(
+    id,
+    updatePayload,
+    { new: true, runValidators: true } // Return the updated document and validate fields
+  );
+
+  if (updatedDiscussionThread) {
+    res.json({
+      success: true,
+      data: updatedDiscussionThread,
+    });
+  } else {
+    res.status(404);
+    throw new Error("Discussion thread not found");
+  }
+});
+
 const deleteDiscussionThread = asyncHandler(async (req, res, next) => {
   const { id } = req.params;
 
@@ -97,6 +129,40 @@ const createComment = asyncHandler(async (req, res, next) => {
     });
   } else {
     throw new Error("Failed to create a comment");
+  }
+});
+
+const updateComment = asyncHandler(async (req, res, next) => {
+  const { commentId } = req.params;
+  const { description } = req.body;
+
+  if (!commentId || !description) {
+    res.status(400);
+    throw new Error("commentId and description are required");
+  }
+
+  // Find the comment by ID
+  const comment = await CommentModel.findById(commentId);
+
+  if (!comment) {
+    res.status(404);
+    throw new Error("Comment with the given id not found");
+  }
+
+  // Update the comment description
+  const updatedComment = await CommentModel.findByIdAndUpdate(
+    commentId,
+    { description },
+    { new: true } // Return the updated document
+  );
+
+  if (updatedComment) {
+    res.status(200).json({
+      success: true,
+      data: updatedComment,
+    });
+  } else {
+    throw new Error("Failed to update the comment");
   }
 });
 
@@ -316,9 +382,11 @@ const getDiscussionById = asyncHandler(async (req, res, next) => {
 module.exports = {
   getDiscussionById,
   createDiscussionThread,
+  updateDiscussionThread,
   deleteDiscussionThread,
   viewAllDiscussionThreads,
   createComment,
+  updateComment,
   createCommentReply,
   viewAllCommentsOfDiscussion,
   viewAllCommentsOfParentComment,
