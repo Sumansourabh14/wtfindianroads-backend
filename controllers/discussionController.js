@@ -259,7 +259,7 @@ const deleteComment = asyncHandler(async (req, res, next) => {
 });
 
 const deleteCommentReply = asyncHandler(async (req, res, next) => {
-  const { commentId, parentCommentId } = req.params;
+  const { commentId, parentCommentId, discussionId } = req.params;
 
   if (!commentId || !parentCommentId) {
     res.status(400);
@@ -283,10 +283,17 @@ const deleteCommentReply = asyncHandler(async (req, res, next) => {
     { new: true }
   );
 
-  if (updatedParentComment) {
+  // update discussion to exclude the comment reply
+  const updatedDiscussion = await DiscussionModel.findByIdAndUpdate(
+    discussionId,
+    { $pull: { comments: commentId } },
+    { new: true }
+  );
+
+  if (updatedParentComment && updatedDiscussion) {
     res.status(200).json({
       success: true,
-      message: `Comment with id: ${commentId} has been removed`,
+      message: `Comment reply with id: ${commentId} has been removed`,
     });
   } else {
     throw new Error(

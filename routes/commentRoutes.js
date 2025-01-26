@@ -22,7 +22,7 @@ router.delete(
   deleteComment
 );
 router.delete(
-  "/delete/reply/:parentCommentId/:commentId",
+  "/delete/reply/:parentCommentId/:commentId/:discussionId",
   authMiddleware,
   deleteCommentReply
 );
