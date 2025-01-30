@@ -50,4 +50,14 @@ const createTrip = asyncHandler(async (req, res, next) => {
   }
 });
 
-module.exports = { createTrip };
+const getAllTrips = asyncHandler(async (req, res, next) => {
+  const trips = await TripModel.find();
+
+  res.status(201).json({
+    success: true,
+    total: trips.length,
+    data: trips,
+  });
+});
+
+module.exports = { createTrip, getAllTrips };
