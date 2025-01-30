@@ -18,6 +18,7 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 const authRoutes = require("./routes/authRoutes");
+const tripRoutes = require("./routes/tripRoutes");
 const dataRoutes = require("./routes/dataRoutes");
 const userRoutes = require("./routes/userRoutes");
 const videoRoutes = require("./routes/videoRoutes");
@@ -57,6 +58,7 @@ app.use("/api/v1/video", videoRoutes);
 app.use("/api/v1/discussion", discussionRoutes);
 app.use("/api/v1/comment", commentRoutes);
 app.use("/api/v1/data", dataRoutes);
+app.use("/api/v1/trips", tripRoutes);
 app.use(errorMiddleware);
 
 server.listen(PORT, () => {

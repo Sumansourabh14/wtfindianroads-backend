@@ -18,6 +18,12 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    trips: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "trip",
+      },
+    ],
   },
   { timestamps: true }
 );

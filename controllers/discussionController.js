@@ -19,7 +19,7 @@ const createDiscussionThread = asyncHandler(async (req, res, next) => {
   const newDiscussionThread = await DiscussionModel.create(payload);
 
   if (!!newDiscussionThread) {
-    res.json({
+    res.status(201).json({
       success: true,
       data: newDiscussionThread,
     });
