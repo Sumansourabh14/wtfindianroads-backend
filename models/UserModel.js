@@ -18,6 +18,10 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    carOwned: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "car", // Reference to the Car model
+    },
     trips: [
       {
         type: mongoose.Schema.Types.ObjectId,

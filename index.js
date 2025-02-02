@@ -24,14 +24,14 @@ const userRoutes = require("./routes/userRoutes");
 const videoRoutes = require("./routes/videoRoutes");
 const discussionRoutes = require("./routes/discussionRoutes");
 const commentRoutes = require("./routes/commentRoutes");
-const connectDb = require("./utils/connectDb");
+const { connectDb } = require("./utils/connectDb");
 const errorMiddleware = require("./middlewares/errorMiddleware");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const cron = require("node-cron");
 const { pingServer } = require("./utils/pingServer");
 
-connectDb();
+connectDb(process.env.MONGO_URI, process.env.CAARS_MONGO_URI);
 
 cron.schedule("*/15 * * * *", () => {
   pingServer();
