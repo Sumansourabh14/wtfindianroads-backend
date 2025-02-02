@@ -320,7 +320,7 @@ const viewAllCommentsOfDiscussion = asyncHandler(async (req, res, next) => {
     discussion: discussionId,
     parentCommentId: { $eq: null },
   })
-    .populate("author", "username") // Populate only the username field from User
+    .populate("author", "username carOwned") // Populate only the username field from User
     .sort({ createdAt: -1 })
     .lean();
 
@@ -343,7 +343,7 @@ const viewAllCommentsOfParentComment = asyncHandler(async (req, res, next) => {
   }
 
   const comments = await CommentModel.find({ parentCommentId: commentId })
-    .populate("author", "username") // Populate only the username field from User
+    .populate("author", "username carOwned") // Populate only the username field from User
     .sort({ createdAt: -1 })
     .lean();
 
@@ -356,7 +356,7 @@ const viewAllCommentsOfParentComment = asyncHandler(async (req, res, next) => {
 
 const viewAllDiscussionThreads = asyncHandler(async (req, res, next) => {
   const discussionThreads = await DiscussionModel.find()
-    .populate("author", "username") // Populate only the username field from User
+    .populate("author", "username carOwned") // Populate only the username field from User
     .sort({ createdAt: -1 })
     .lean();
 
@@ -372,7 +372,7 @@ const getDiscussionById = asyncHandler(async (req, res, next) => {
 
   const discussionThread = await DiscussionModel.findById(id).populate(
     "author",
-    "username" // Only include the username field from the User model
+    "username carOwned" // Only include the username field from the User model
   );
 
   if (!discussionThread) {
