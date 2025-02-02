@@ -9,6 +9,27 @@ const getSelfUser = asyncHandler(async (req, res, next) => {
   });
 });
 
+const updateSelfDetails = asyncHandler(async (req, res, next) => {
+  const { carId } = req.body;
+
+  let details = {};
+  if (carId) details.carOwned = carId;
+
+  const user = await UserModel.findByIdAndUpdate(req.user._id, details, {
+    new: true,
+  });
+
+  if (user) {
+    res.json({
+      success: true,
+      user,
+    });
+  } else {
+    res.status(400);
+    throw new Error("Failed to update self details");
+  }
+});
+
 // public
 const getAllUsers = asyncHandler(async (req, res, next) => {
   const users = await UserModel.find()
@@ -35,4 +56,9 @@ const getLatestUsers = asyncHandler(async (req, res, next) => {
   });
 });
 
-module.exports = { getSelfUser, getAllUsers, getLatestUsers };
+module.exports = {
+  getSelfUser,
+  updateSelfDetails,
+  getAllUsers,
+  getLatestUsers,
+};
