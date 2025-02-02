@@ -53,11 +53,21 @@ const createTrip = asyncHandler(async (req, res, next) => {
 const getAllTrips = asyncHandler(async (req, res, next) => {
   const trips = await TripModel.find();
 
-  res.status(201).json({
+  res.status(200).json({
     success: true,
     total: trips.length,
     data: trips,
   });
 });
 
-module.exports = { createTrip, getAllTrips };
+const getAllTripsBySelfUser = asyncHandler(async (req, res, next) => {
+  const trips = await TripModel.find({ user: req.user._id });
+
+  res.status(200).json({
+    success: true,
+    total: trips.length,
+    data: trips,
+  });
+});
+
+module.exports = { createTrip, getAllTrips, getAllTripsBySelfUser };
